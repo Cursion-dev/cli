@@ -1,4 +1,5 @@
 import typer, os, json, time
+import pkg_resources
 from pathlib import Path
 from dotenv import load_dotenv
 from pprint import pprint
@@ -8,10 +9,12 @@ from .api import *
 
 # High Level Configs
 
-load_dotenv()
-
 app = typer.Typer()
-env_file = Path('./.env')
+# env_file = Path('./.env')
+
+env_file = pkg_resources.resource_filename('scanerr-cli')
+
+load_dotenv(dotenv_path=env_file)
 
 API_KEY = f'Token {os.getenv('API_KEY')}'
 API_ROOT = f'{os.getenv('API_ROOT')}/v1/ops'
