@@ -9,13 +9,13 @@ This is the CLI repo for the Scanerr API, an error detection service designed to
 Copyright © Scanerr 2024
 
 ### Usage
-> Reference https://docs.scanerr.io for usage instructions
+> Reference <a target="_blank" href="https://docs.scanerr.io/guides/cli.html">Scanerr Docs</a> for usage instructions
 
 ---
 
 ### Installation
 ```shell
-pip install scanerr-cli
+pip install scanerr
 ```
 
 ## Basic Setup

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scanerr"
-version = "0.0.6"
+version = "0.0.1"
 authors = [
   { name="Scanerr", email="hello@scanerr.io" },
 ]
@@ -21,6 +21,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/scanerr-io/cli"
 Issues = "https://github.com/scanerr-io/cli/issues"
+Documentaion = "https://docs.scanerr.io"
 
 [project.scripts]
 scanerr = "src.scanerr.root:root"

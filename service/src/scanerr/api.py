@@ -558,11 +558,12 @@ def api_test_site(
         rprint(str(f'\ntesting page {page['page_url']}\
             \n test_id    : {test_id}\
             \n pre_scan   : {pre_scan_ids[i]}\
-            \n post_scan  : {page["info"]["latest_scan"]["id"]}\n'
+            \n post_scan  : {page["info"]["latest_scan"]["id"]}'
         ))
         i += 1
 
     # 9. Check for all `Test` completion
+    print('\n')
     wait_for_completion(ids=test_ids, obj='test')
 
     # checking scores
