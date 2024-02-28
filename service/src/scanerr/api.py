@@ -1,8 +1,11 @@
 import requests, json, os, time
 from dotenv import load_dotenv
+from pathlib import Path
 from rich import print as rprint
 
-load_dotenv()
+env_file = Path(str(Path.cwd()) + '/.env')
+
+load_dotenv(dotenv_path=env_file)
 
 # import env vars
 SCANERR_API_BASE_URL = os.getenv('API_ROOT')
@@ -494,9 +497,9 @@ def api_test_site(
 
     # 2. Check for crawl completion
     wait_time = 0
-    site_status = None
+    site_status = 500
     print(f'checking site availablity...')
-    while not str(site_status).startswith('5') and wait_time < max_wait_time:
+    while str(site_status).startswith('5') and wait_time < max_wait_time:
         # sleeping for 5 seconds
         time.sleep(5)
         wait_time += 5

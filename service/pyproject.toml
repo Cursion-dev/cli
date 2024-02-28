@@ -3,25 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "scanerr-cli"
-version = "0.0.1"
-dependencies = [
-  "click",
-  "certifi",
-  "charset-normalizer",
-  "colorama",
-  "idna",
-  "markdown-it-py",
-  "mdurl",
-  "Pygments",
-  "python-dotenv",
-  "requests",
-  "rich",
-  "shellingham",
-  "typer",
-  "typing_extensions",
-  "urllib3"
-]
+name = "scanerr"
+version = "0.0.6"
 authors = [
   { name="Scanerr", email="hello@scanerr.io" },
 ]
