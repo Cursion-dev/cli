@@ -14,7 +14,7 @@ env_file = Path(str(Path.cwd()) + '/.env')
 load_dotenv(dotenv_path=env_file)
 
 API_KEY = f'Token {os.getenv('API_KEY')}'
-API_ROOT = f'{os.getenv('API_ROOT')}/v1/ops'
+API_ROOT = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.scanerr.io'}/v1/ops'
 
 
 
@@ -158,7 +158,7 @@ def print_formated_response(response: dict, verbose: bool=True) -> None:
 
 
 @app.command()
-def add_site(site_url: str, v: bool=True):
+def add_site(site_url: str, v: bool=True, api_key: str=None):
 
     """ 
     Add a `Site` object to your Scanerr account
@@ -167,7 +167,8 @@ def add_site(site_url: str, v: bool=True):
     # sending request
     resp = api_add_site(
         site_url=site_url, 
-        page_urls=None
+        page_urls=None,
+        api_key=api_key,
     )
 
     # printing output
@@ -180,7 +181,7 @@ def add_site(site_url: str, v: bool=True):
     
 
 @app.command()
-def get_sites(site_id: str=None, v: bool=True):
+def get_sites(site_id: str=None, v: bool=True, api_key: str=None):
 
     """ 
     Get one or more `Site` objects associated
@@ -189,7 +190,8 @@ def get_sites(site_id: str=None, v: bool=True):
 
     # sending request
     resp = api_get_sites(
-        site_id=site_id, 
+        site_id=site_id,
+        api_key=api_key, 
     )
 
     # printing output
@@ -202,7 +204,7 @@ def get_sites(site_id: str=None, v: bool=True):
 
 
 @app.command()
-def crawl_site(site_id: str, v: bool=True):
+def crawl_site(site_id: str, v: bool=True, api_key: str=None):
 
     """ 
     Crawl a specific `Site` for new `Page` objects
@@ -210,7 +212,8 @@ def crawl_site(site_id: str, v: bool=True):
 
     # sending request
     resp = api_crawl_site(
-        site_id=site_id, 
+        site_id=site_id,
+        api_key=api_key, 
     )
 
     # printing output
@@ -223,7 +226,7 @@ def crawl_site(site_id: str, v: bool=True):
 
 
 @app.command()
-def delete_site(site_id: str, v: bool=True):
+def delete_site(site_id: str, v: bool=True, api_key: str=None):
 
     """ 
     Delete a specific `Site` object 
@@ -232,6 +235,7 @@ def delete_site(site_id: str, v: bool=True):
     # sending request
     resp = api_delete_site(
         site_id=site_id, 
+        api_key=api_key,
     )
 
     # printing output
@@ -244,7 +248,7 @@ def delete_site(site_id: str, v: bool=True):
 
 
 @app.command()
-def add_page(site_id: str, page_url: str, v: bool=True):
+def add_page(site_id: str, page_url: str, v: bool=True, api_key: str=None):
 
     """ 
     Add a new `Page` object to a specific `Site` object
@@ -253,7 +257,8 @@ def add_page(site_id: str, page_url: str, v: bool=True):
     # sending request
     resp = api_add_page(
         site_id=site_id, 
-        page_url=page_url
+        page_url=page_url,
+        api_key=api_key,
     )
 
     # printing output
@@ -266,7 +271,7 @@ def add_page(site_id: str, page_url: str, v: bool=True):
 
 
 @app.command()
-def get_pages(page_id: str=None, site_id: str=None, v: bool=True):
+def get_pages(page_id: str=None, site_id: str=None, v: bool=True, api_key: str=None):
 
     """ 
     Get one or more `Page` objects associated
@@ -277,6 +282,7 @@ def get_pages(page_id: str=None, site_id: str=None, v: bool=True):
     resp = api_get_pages(
         page_id=page_id, 
         site_id=site_id, 
+        api_key=api_key,
     )
 
     # printing output
@@ -289,7 +295,7 @@ def get_pages(page_id: str=None, site_id: str=None, v: bool=True):
 
 
 @app.command()
-def delete_page(page_id: str, v: bool=True):
+def delete_page(page_id: str, v: bool=True, api_key: str=None):
 
     """ 
     Delete a specific `Page` object 
@@ -297,7 +303,8 @@ def delete_page(page_id: str, v: bool=True):
 
     # sending request
     resp = api_delete_page(
-        page_id=page_id, 
+        page_id=page_id,
+        api_key=api_key, 
     )
 
     # printing output
@@ -310,7 +317,7 @@ def delete_page(page_id: str, v: bool=True):
 
 
 @app.command()
-def scan_site(site_id: str, v: bool=True):
+def scan_site(site_id: str, v: bool=True, api_key: str=None):
 
     """ 
     Create new `Scan` objects for each `Page` associated
@@ -320,6 +327,7 @@ def scan_site(site_id: str, v: bool=True):
     # sending request
     resp = api_scan_site(
         site_id=site_id, 
+        api_key=api_key,
     )
 
     # printing output
@@ -332,7 +340,7 @@ def scan_site(site_id: str, v: bool=True):
 
 
 @app.command()
-def scan_page(page_id: str, v: bool=True):
+def scan_page(page_id: str, v: bool=True, api_key: str=None):
 
     """ 
     Create a new `Scan` object for a specific `Page`
@@ -341,6 +349,7 @@ def scan_page(page_id: str, v: bool=True):
     # sending request
     resp = api_scan_page(
         page_id=page_id, 
+        api_key=api_key,
     )
 
     # printing output
@@ -353,7 +362,7 @@ def scan_page(page_id: str, v: bool=True):
 
 
 @app.command()
-def get_scans(scan_id: str=None, page_id: str=None, v: bool=True):
+def get_scans(scan_id: str=None, page_id: str=None, v: bool=True, api_key: str=None):
 
     """ 
     Get one or more `Scan` objects associated
@@ -364,6 +373,7 @@ def get_scans(scan_id: str=None, page_id: str=None, v: bool=True):
     resp = api_get_scans(
         scan_id=scan_id, 
         page_id=page_id, 
+        api_key=api_key,
     )
 
     # printing output
@@ -376,7 +386,7 @@ def get_scans(scan_id: str=None, page_id: str=None, v: bool=True):
 
 
 @app.command()
-def test_page(page_id: str, pre_scan_id: str, post_scan_id: str, v: bool=True):
+def test_page(page_id: str, pre_scan_id: str, post_scan_id: str, v: bool=True, api_key: str=None):
 
     """ 
     Create a new `Test` for a specific `Page`
@@ -387,6 +397,7 @@ def test_page(page_id: str, pre_scan_id: str, post_scan_id: str, v: bool=True):
         page_id=page_id, 
         pre_scan=pre_scan_id, 
         post_scan=post_scan_id, 
+        api_key=api_key,
     )
 
     # printing output
@@ -399,7 +410,7 @@ def test_page(page_id: str, pre_scan_id: str, post_scan_id: str, v: bool=True):
 
 
 @app.command()
-def get_tests(page_id: str=None, test_id: str=None, v: bool=True):
+def get_tests(page_id: str=None, test_id: str=None, v: bool=True, api_key: str=None):
 
     """ 
     Get one or more `Test` objects associated
@@ -410,6 +421,7 @@ def get_tests(page_id: str=None, test_id: str=None, v: bool=True):
     resp = api_get_tests(
         page_id=page_id, 
         test_id=test_id,
+        api_key=api_key,
     )
 
     # printing output
@@ -426,6 +438,7 @@ def test_site(
         site_id: str, 
         max_wait_time :int=120,
         min_score: int=90,
+        api_key: str=None
     ):
 
     """ 
@@ -437,7 +450,8 @@ def test_site(
     resp = api_test_site(
         site_id=site_id, 
         max_wait_time=max_wait_time,
-        min_score=min_score
+        min_score=min_score,
+        api_key=api_key,
     )
 
     if not resp:

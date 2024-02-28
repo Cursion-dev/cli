@@ -8,7 +8,7 @@ env_file = Path(str(Path.cwd()) + '/.env')
 load_dotenv(dotenv_path=env_file)
 
 # import env vars
-SCANERR_API_BASE_URL = os.getenv('API_ROOT')
+SCANERR_API_BASE_URL = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.scanerr.io'}/v1/ops'
 SCANERR_API_TOKEN = f'Token {os.getenv('API_KEY')}'
 headers = {
    "content-type": "application/json",
@@ -37,6 +37,33 @@ def format_response(response: dict) -> dict:
     return resp
 
 
+
+
+def check_headers(api_key:str = None):
+
+    # check headers for API KEY
+    if 'None' in headers["Authorization"] or \
+        len(headers["Authorization"]) < 20:
+
+        # check if API_KEY was passed
+        if api_key is None:
+            rprint(
+                '[red bold]' + u'\u2718' + '[/red bold]' +
+                f' please pass --api-key=<api-key>'
+            )
+            return None
+
+        # updated header if api_key is present
+        headers["Authorization"] = f'Token {api_key}'
+        return headers
+
+    # return unchanged headers 
+    else:
+        return headers
+
+
+
+
 def api_add_site(*args, **kwargs):
 
     """ 
@@ -49,6 +76,7 @@ def api_add_site(*args, **kwargs):
     # get kwargs
     site_url = kwargs.get('site_url')
     page_urls = kwargs.get('page_urls')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/site/delay'
@@ -58,6 +86,9 @@ def api_add_site(*args, **kwargs):
         "page_urls": page_urls if page_urls is not None else None
     }
 
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
+        
     # send the request
     res = requests.post(
         url=url, 
@@ -73,6 +104,7 @@ def api_add_site(*args, **kwargs):
 
 
 
+
 def api_crawl_site(*args, **kwargs):
 
     """
@@ -83,9 +115,13 @@ def api_crawl_site(*args, **kwargs):
 
     # get kwargs
     site_id = kwargs.get('site_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/site/{site_id}/crawl' 
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.post(
@@ -111,6 +147,7 @@ def api_get_sites(*args, **kwargs):
 
     # get kwargs
     site_id = kwargs.get('site_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/site'
@@ -118,6 +155,9 @@ def api_get_sites(*args, **kwargs):
     params = {
         "site_id": site_id,
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.get(
@@ -144,9 +184,13 @@ def api_delete_site(*args, **kwargs):
 
     # get kwargs
     site_id = kwargs.get('site_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/site/{site_id}'
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.delete(
@@ -174,6 +218,7 @@ def api_add_page(*args, **kwargs):
     site_id = kwargs.get('site_id')
     page_url = kwargs.get('page_url')
     page_urls = kwargs.get('page_urls')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/page/delay'
@@ -183,6 +228,9 @@ def api_add_page(*args, **kwargs):
         "page_url": page_url if page_url is not None else None,
         "page_urls": page_urls if page_urls is not None else None, 
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.post(
@@ -210,6 +258,7 @@ def api_get_pages(*args, **kwargs):
     # get kwargs
     site_id = kwargs.get('site_id')
     page_id = kwargs.get('page_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/page'
@@ -219,6 +268,9 @@ def api_get_pages(*args, **kwargs):
         "page_id": page_id, # OPTIONAL for returning a specific Page
         "lean": "true" 
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.get(
@@ -245,9 +297,13 @@ def api_delete_page(*args, **kwargs):
 
     # get kwargs
     page_id = kwargs.get('page_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/page/{page_id}'
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
     
     # send the request
     res = requests.delete(
@@ -273,6 +329,7 @@ def api_scan_site(*args, **kwargs):
 
     # get kwargs
     site_id = kwargs.get('site_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/scan/delay'
@@ -280,6 +337,9 @@ def api_scan_site(*args, **kwargs):
     data = {
         "site_id": site_id 
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.post(
@@ -306,6 +366,7 @@ def api_scan_page(*args, **kwargs):
 
     # get kwargs
     page_id = kwargs.get('page_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/scan/delay'
@@ -313,6 +374,9 @@ def api_scan_page(*args, **kwargs):
     data = {
         "page_id": page_id
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.post(
@@ -340,6 +404,7 @@ def api_get_scans(*args, **kwargs):
     # get kwargs
     page_id = kwargs.get('page_id')
     scan_id = kwargs.get('scan_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/scan'
@@ -349,6 +414,9 @@ def api_get_scans(*args, **kwargs):
         'page_id': page_id,
         'lean': 'true'
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.get(
@@ -378,6 +446,7 @@ def api_test_page(*args, **kwargs):
     page_id = kwargs.get('page_id')
     pre_scan = kwargs.get('pre_scan')
     post_scan = kwargs.get('post_scan')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/test/delay'
@@ -387,6 +456,9 @@ def api_test_page(*args, **kwargs):
         "pre_scan": pre_scan, 
         "post_scan": post_scan,
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.post(
@@ -413,6 +485,7 @@ def api_get_tests(*args, **kwargs):
     # get kwargs
     page_id = kwargs.get('page_id')
     test_id = kwargs.get('test_id')
+    api_key = kwargs.get('api_key')
 
     # setup configs
     url = f'{SCANERR_API_BASE_URL}/test'
@@ -422,6 +495,9 @@ def api_get_tests(*args, **kwargs):
         'page_id': page_id,
         'lean': 'true'
     }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
 
     # send the request
     res = requests.get(
@@ -474,7 +550,8 @@ def wait_for_completion(ids: list, obj: str) -> None:
 def api_test_site(
         site_id: str,
         max_wait_time: int=120,
-        min_score: int=90
+        min_score: int=90,
+        api_key: str=None
     ):
     
     """ 
@@ -493,7 +570,7 @@ def api_test_site(
     """
 
     # 1. get the site
-    site = api_get_sites(site_id=site_id)['data']
+    site = api_get_sites(site_id=site_id, api_key=api_key)['data']
 
     # 2. Check for crawl completion
     wait_time = 0
@@ -519,8 +596,9 @@ def api_test_site(
         )
 
     # 3. Get all `Pages` for associated `Site` 
-    print(f'retrieving pages...')
-    pages = api_get_pages(site_id=str(site['id']))['data']['results']
+    print(f'\nretrieving pages...')
+    pages = api_get_pages(site_id=str(site['id']), api_key=api_key)['data']['results']
+    rprint('[green bold]' + u'\u2714' + '[/green bold]' + f' retrieved pages')
 
     # 4. Get all "pre_scan" id's for each `Page`
     pre_scan_ids = []
@@ -530,20 +608,20 @@ def api_test_site(
         pre_scan_ids.append(pre_scan_id)
 
     # 5. Check for all "pre_scan" completion
-    print(f'checking pre_scans for each page...')
+    print(f'\nchecking pre_scans for each page...')
     wait_for_completion(ids=pre_scan_ids, obj='scan')
     
     # 6. Create new "post_scans" for each `Page`
-    print(f'creating post_scans for each page...')
-    post_scan_ids = api_scan_site(site_id=str(site['id']))['data']['ids']
+    print(f'\ncreating post_scans for each page...')
+    post_scan_ids = api_scan_site(site_id=str(site['id']), api_key=api_key)['data']['ids']
     rprint('[green bold]' + u'\u2714' + '[/green bold]' + f' post_scans created')
 
     # 7. Check for all "post_scan" completion
-    print(f'checking post_scans for each page...')
+    print(f'\nchecking post_scans for each page...')
     wait_for_completion(ids=post_scan_ids, obj='scan')
 
     # 8. Create new `Test` for each `Page`
-    pages = api_get_pages(site_id=str(site['id']))['data']['results']
+    pages = api_get_pages(site_id=str(site['id']), api_key=api_key)['data']['results']
     test_ids = []
     i = 0
     for page in pages:
@@ -551,7 +629,8 @@ def api_test_site(
         test_id = api_test_page(
             page_id=str(page['id']),
             pre_scan=str(pre_scan_ids[i]),
-            post_scan=str(page['info']['latest_scan']['id'])
+            post_scan=str(page['info']['latest_scan']['id']),
+            api_key=api_key
         )['data']['ids'][0]
         # record test_id
         test_ids.append(test_id)
@@ -563,14 +642,14 @@ def api_test_site(
         i += 1
 
     # 9. Check for all `Test` completion
-    print('\n')
+    print(f'\nchecking test completion for each page...')
     wait_for_completion(ids=test_ids, obj='test')
 
     # checking scores
     success = True
     print('\nTest results:')
     for test_id in test_ids:
-        score = api_get_tests(test_id=test_id)['data']['score']
+        score = api_get_tests(test_id=test_id, api_key=api_key)['data']['score']
         _scroe = str(round(score, 2))
         if score >= min_score:
             rprint(
