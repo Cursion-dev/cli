@@ -24,3 +24,5 @@ scanerr config <api_key>
 scanerr check
 ```
 
+
+ref -> https://packaging.python.org/en/latest/tutorials/packaging-projects/
