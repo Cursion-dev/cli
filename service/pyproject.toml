@@ -5,18 +5,39 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "scanerr-cli"
 version = "0.0.1"
+dependencies = [
+  "click",
+  "certifi",
+  "charset-normalizer",
+  "colorama",
+  "idna",
+  "markdown-it-py",
+  "mdurl",
+  "Pygments",
+  "python-dotenv",
+  "requests",
+  "rich",
+  "shellingham",
+  "typer",
+  "typing_extensions",
+  "urllib3"
+]
 authors = [
   { name="Scanerr", email="hello@scanerr.io" },
 ]
 description = "Official Scanerr CLI"
 readme = "README.md"
 requires-python = ">=3.9"
+keywords = ["regression testing", "vrt", "visual regression testing"]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
 ]
 
 [project.urls]
 Homepage = "https://github.com/scanerr-io/cli"
 Issues = "https://github.com/scanerr-io/cli/issues"
+
+[project.scripts]
+scanerr = "src.scanerr.root:root"

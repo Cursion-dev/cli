@@ -24,7 +24,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'scanerr=src.root:root'
+            'scanerr=src.scanerr.root:root'
         ]
     }
 )

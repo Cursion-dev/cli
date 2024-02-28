@@ -1,5 +1,4 @@
 import typer, os, json, time
-import pkg_resources
 from pathlib import Path
 from dotenv import load_dotenv
 from pprint import pprint
@@ -10,9 +9,7 @@ from .api import *
 # High Level Configs
 
 app = typer.Typer()
-# env_file = Path('./.env')
-
-env_file = pkg_resources.resource_filename('scanerr-cli')
+env_file = Path(str(Path.cwd()) + '/.env')
 
 load_dotenv(dotenv_path=env_file)
 

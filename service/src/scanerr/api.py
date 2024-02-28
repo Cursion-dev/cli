@@ -496,7 +496,7 @@ def api_test_site(
     wait_time = 0
     site_status = None
     print(f'checking site availablity...')
-    while site_status != 200 and wait_time < max_wait_time:
+    while not str(site_status).startswith('5') and wait_time < max_wait_time:
         # sleeping for 5 seconds
         time.sleep(5)
         wait_time += 5
@@ -506,7 +506,7 @@ def api_test_site(
     # determine if timeout 
     if wait_time >= max_wait_time:
         rprint(
-            '[red bold]' + u'\u2714' + '[/red bold]' + 
+            '[red bold]' + u'\u2718' + '[/red bold]' + 
             ' max wait time reached - proceeding with caution...'
         )
     else:
