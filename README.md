@@ -1,6 +1,6 @@
 # Scanerr CLI (command line interface)
 
-![API Status](https://github.com/scanerr-io/server/actions/workflows/k8s-deploy.yaml/badge.svg)
+![Static Badge](https://img.shields.io/badge/CLI-Available-mint)
 
 This is the CLI repo for the Scanerr API, an error detection service designed to run front-end tests on web applications.
 
