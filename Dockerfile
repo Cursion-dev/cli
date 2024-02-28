@@ -1,10 +1,12 @@
-FROM python:3.12-alpine
-
+FROM python:3.12-slim
 ENV PYTHONUNBUFFERED 1
 
 # create the app user
-RUN addgroup -S app && adduser -S app -G app
+RUN addgroup --system app && adduser --system app 
 
-# installing scanerr
-RUN pip install scanerr
+# installing python3 & pip
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# installing scanerr & deps
+RUN python3 -m pip install scanerr typer requests rich python-dotenv
 
