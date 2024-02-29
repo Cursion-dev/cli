@@ -38,7 +38,7 @@ docker run scanerr/cli test-site \
     <site-id> \
     --min-score 85 \
     --max-wait-time 120 \
-    --api-key <api_key> \
+    --api-key <api_key> 
 ```
 
 **For a full list of commands:**
