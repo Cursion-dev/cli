@@ -14,7 +14,7 @@ env_file = Path(str(Path.cwd()) + '/.env')
 load_dotenv(dotenv_path=env_file)
 
 API_KEY = f'Token {os.getenv('API_KEY')}'
-API_ROOT = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.scanerr.io'}/v1/ops'
+API_ROOT = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.scanerr.io'}'
 
 
 
@@ -35,7 +35,7 @@ def config(api_key: str, api_root: str='https://api.scanerr.io') -> None:
     # adding new configs tp .env
     with open(env_file, "w") as f:
         f.write(f'API_KEY={api_key}\n')
-        f.write(f'API_ROOT={api_root}/v1/ops\n')
+        f.write(f'API_ROOT={api_root}\n')
     
     # print response
     rprint(
