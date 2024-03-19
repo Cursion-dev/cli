@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from rich import print as rprint
 
-env_file = Path(str(Path.cwd()) + '/.env')
+env_file = Path(str(Path.home()) + '/scanerr/.env')
 
 load_dotenv(dotenv_path=env_file)
 

@@ -9,3 +9,7 @@ __pycache__/
 **/__pycache__/
 .env.tokens
 *venv/*
+NOTES.md
+service/dist/*
+service/scanerr.egg-info/*
+

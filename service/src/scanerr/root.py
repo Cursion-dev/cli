@@ -9,7 +9,7 @@ from .api import *
 # High Level Configs
 
 app = typer.Typer()
-env_file = Path(str(Path.cwd()) + '/.env')
+env_file = Path(str(Path.home()) + '/scanerr/.env')
 
 load_dotenv(dotenv_path=env_file)
 
@@ -31,6 +31,9 @@ def config(api_key: str, api_root: str='https://api.scanerr.io') -> None:
     # deleting .env if exists
     if env_file.exists():
         os.remove(env_file)
+    
+    # creating new .env file
+    os.mkdir(Path(f'{Path.home()}/scanerr'))
 
     # adding new configs tp .env
     with open(env_file, "w") as f:
