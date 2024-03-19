@@ -1,4 +1,4 @@
-import typer, os, json, time
+import typer, os, json, time, shutil
 from pathlib import Path
 from dotenv import load_dotenv
 from pprint import pprint
@@ -30,7 +30,7 @@ def config(api_key: str, api_root: str='https://api.scanerr.io') -> None:
 
     # deleting .env if exists
     if env_file.exists():
-        os.remove(env_file)
+        shutil.rmtree(env_file)
     
     # creating new .env file
     os.mkdir(Path(f'{Path.home()}/scanerr'))
