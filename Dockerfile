@@ -10,7 +10,7 @@ RUN addgroup --system app && adduser --system app
 RUN apt-get update && apt-get install -y python3 python3-pip
 
 # installing scanerr & deps
-RUN python3 -m pip install scanerr==0.0.5 typer requests rich python-dotenv
+RUN python3 -m pip install scanerr==0.0.6 typer requests rich python-dotenv
 
 # entry point
 ENTRYPOINT [ "scanerr" ]

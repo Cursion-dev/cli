@@ -520,10 +520,10 @@ def wait_for_completion(ids: list, obj: str) -> None:
 
     """ 
     This method waits for either a set of `Scan` or `Test` objects
-    finish running - or timesout at max_wait_time (300s)
+    finish running - or timesout at max_wait_time (900s)
     """
 
-    max_wait_time = 300
+    max_wait_time = 900
     wait_time = 0
     completions = []
     while (len(completions) != len(ids)) and wait_time < max_wait_time:
