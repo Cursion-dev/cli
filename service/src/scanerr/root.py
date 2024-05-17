@@ -465,13 +465,64 @@ def test_site(
 
 
 
+
+
+@app.command()
+def get_cases(case_id: str=None, site_id: str=None, v: bool=True, api_key: str=None):
+
+    """ 
+    Get one or more `Cases` objects associated
+    with a specific `Site`
+    """
+
+    # sending request
+    resp = api_get_cases(
+        site_id=site_id, 
+        case_id=case_id,
+        api_key=api_key,
+    )
+
+    # printing output
+    print_formated_response(
+        response=resp,
+        verbose=v
+    )
+
+
+
+
+
+@app.command()
+def get_testcases(testcase_id: str=None, site_id: str=None, v: bool=True, api_key: str=None):
+
+    """ 
+    Get one or more `Testcases` objects associated
+    with a specific `Site`
+    """
+
+    # sending request
+    resp = api_get_testcases(
+        site_id=site_id, 
+        testcase_id=testcase_id,
+        api_key=api_key,
+    )
+
+    # printing output
+    print_formated_response(
+        response=resp,
+        verbose=v
+    )
+
+
+
+
 @app.command(
     context_settings={
         "allow_extra_args": True, 
         "ignore_unknown_options": True
     }
 )
-def testcase(
+def testcase_site(
         site_id: str,
         case_id: str, 
         max_wait_time :int=120,
@@ -484,7 +535,7 @@ def testcase(
     """
 
     # sending request
-    resp = api_testcase(
+    resp = api_testcase_site(
         site_id=site_id, 
         case_id=case_id, 
         max_wait_time=max_wait_time,

@@ -550,16 +550,6 @@ def api_get_cases(*args, **kwargs):
     # format response
     resp = format_response(res)
 
-    # get steps data from resp
-    if resp['success']:
-        steps_data = requests.get(
-            url=resp['data']['steps']['url'],
-            headers=headers
-        ).json()
-
-        # update resp with new data
-        resp['data']['steps']['steps'] = steps_data
-
     # return object as dict
     return resp
 
@@ -642,6 +632,7 @@ def api_add_testcases(*args, **kwargs):
 
     # return object as dict
     return resp
+
 
 
 
@@ -800,7 +791,7 @@ def api_test_site(
 
 
 
-def api_testcase(
+def api_testcase_site(
         site_id: str,
         case_id: str,
         max_wait_time: int=120,
