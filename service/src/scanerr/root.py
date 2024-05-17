@@ -1,5 +1,6 @@
 import typer, os, json, time, shutil
 from pathlib import Path
+from typing import List
 from dotenv import load_dotenv
 from pprint import pprint
 from rich import print as rprint
@@ -461,6 +462,38 @@ def test_site(
     if not resp:
         raise Exception('- Scanerr Tests Failed -')
 
+
+
+
+@app.command(
+    context_settings={
+        "allow_extra_args": True, 
+        "ignore_unknown_options": True
+    }
+)
+def testcase(
+        site_id: str,
+        case_id: str, 
+        max_wait_time :int=120,
+        api_key: str=None,
+        updates: typer.Context=None
+    ):
+
+    """ 
+    Run a full `Testcase` of a specific `Site`
+    """
+
+    # sending request
+    resp = api_testcase(
+        site_id=site_id, 
+        case_id=case_id, 
+        max_wait_time=max_wait_time,
+        api_key=api_key,
+        updates=updates.args
+    )
+
+    if not resp:
+        raise Exception('- Scanerr Testcase Failed -')
 
 
 

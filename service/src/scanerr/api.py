@@ -206,6 +206,7 @@ def api_delete_site(*args, **kwargs):
 
 
 
+
 def api_add_page(*args, **kwargs):
 
     """
@@ -475,6 +476,7 @@ def api_test_page(*args, **kwargs):
 
 
 
+
 def api_get_tests(*args, **kwargs):
 
     """
@@ -515,6 +517,133 @@ def api_get_tests(*args, **kwargs):
 
 
 
+def api_get_cases(*args, **kwargs):
+
+    """
+    This Endpoint will retrieve one or more `Cases` for 
+    only the passed "site_id"
+    """
+
+    # get kwargs
+    site_id = kwargs.get('site_id')
+    case_id = kwargs.get('case_id')
+    api_key = kwargs.get('api_key')
+
+    # setup configs
+    url = f'{SCANERR_API_BASE_URL}/case'
+
+    params = {
+        'case_id': case_id, 
+        'site_id': site_id,
+    }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
+
+    # send the request
+    res = requests.get(
+        url=url, 
+        headers=headers, 
+        params=params
+    )
+
+    # format response
+    resp = format_response(res)
+
+    # get steps data from resp
+    if resp['success']:
+        steps_data = requests.get(
+            url=resp['data']['steps']['url'],
+            headers=headers
+        ).json()
+
+        # update resp with new data
+        resp['data']['steps']['steps'] = steps_data
+
+    # return object as dict
+    return resp
+
+
+
+
+def api_get_testcases(*args, **kwargs):
+
+    """
+    This Endpoint will retrieve one or more `Testcases` for 
+    only the passed "site_id"
+    """
+
+    # get kwargs
+    site_id = kwargs.get('site_id')
+    testcase_id = kwargs.get('testcase_id')
+    api_key = kwargs.get('api_key')
+
+    # setup configs
+    url = f'{SCANERR_API_BASE_URL}/testcase'
+
+    params = {
+        'testcase_id': testcase_id,
+        'site_id': site_id,
+    }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
+
+    # send the request
+    res = requests.get(
+        url=url, 
+        headers=headers, 
+        params=params
+    )
+
+    # format response
+    resp = format_response(res)
+
+    # return object as dict
+    return resp
+
+
+
+
+def api_add_testcases(*args, **kwargs):
+
+    """
+    This Endpoint will create and run a new `Testcases` 
+    for the passed "site_id" & "case_id"
+    """
+
+    # get kwargs
+    site_id = kwargs.get('site_id')
+    case_id = kwargs.get('case_id')
+    updates = kwargs.get('updates')
+    api_key = kwargs.get('api_key')
+
+    # setup configs
+    url = f'{SCANERR_API_BASE_URL}/testcase/delay'
+
+    data = {
+        'case_id': case_id,
+        'site_id': site_id,
+        'updates': updates
+    }
+
+    # check headers for API KEY
+    headers = check_headers(api_key=api_key)
+
+    # send the request
+    res = requests.post(
+        url=url, 
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    # format response
+    resp = format_response(res)
+
+    # return object as dict
+    return resp
+
+
 
 def wait_for_completion(ids: list, obj: str) -> None:
 
@@ -536,6 +665,8 @@ def wait_for_completion(ids: list, obj: str) -> None:
                 time_complete = api_get_scans(scan_id=id, page_id=None)['data']['time_completed']
             if obj == 'test':
                 time_complete = api_get_tests(test_id=id, page_id=None)['data']['time_completed']
+            if obj == 'testcase':
+                time_complete = api_get_testcases(testcase_id=id)['data']['time_completed']
             
             # alerting completion
             if time_complete is not None and id not in completions:
@@ -665,6 +796,124 @@ def api_test_site(
 
     # returning results
     return success
+
+
+
+
+def api_testcase(
+        site_id: str,
+        case_id: str,
+        max_wait_time: int=120,
+        api_key: str=None,
+        updates: dict=None,
+    ):
+    
+    """ 
+    This method will run a full `Testcase` for the `Site`
+    asocaited with the passed id's. 
+    Full flow:
+        1. Determine if testing full site or page
+        2. Wait for `Site` to be available
+        3. Adjust steps data (from **kwargs)
+        4. Initiate the `Testcase`
+        5. Check for `Testcase` completion
+    """
+
+    # 1. get the site
+    site = api_get_sites(site_id=site_id, api_key=api_key)['data']
+
+    # 2. Wait for `Site` to be available
+    wait_time = 0
+    site_status = 500
+    print(f'checking site availablity...')
+    while str(site_status).startswith('5') and wait_time < max_wait_time:
+        # sleeping for 5 seconds
+        time.sleep(5)
+        wait_time += 5
+        # check site status
+        site_status = requests.get(url=site['site_url']).status_code
+    
+    # determine if timeout 
+    if wait_time >= max_wait_time:
+        rprint(
+            '[red bold]' + u'\u2718' + '[/red bold]' + 
+            ' max wait time reached - proceeding with caution...'
+        )
+    else:
+        rprint(
+            '[green bold]' + u'\u2714' + '[/green bold]' 
+            + ' site is available'
+        )
+
+    # 3. Adjust steps data (from **kwargs)
+    print(f'\nadjusting step data...')
+    _updates = []
+    for i in updates:
+        if '-' not in i or ':' not in i:
+            rprint(
+                '[red bold]' + u'\u2718' + '[/red bold]' + 
+                ' step data formatted incorrectly (step-0:value)'
+            )
+            return
+
+        # parsing data from step
+        _str = str(i).split(':')
+        value = _str[1]
+        index = int(_str[0].split('-')[1])-1
+
+        # adding data to updates
+        _updates.append({
+            'index': index,
+            'value': value
+        })
+
+    # done parsing and updating
+    rprint('[green bold]' + u'\u2714' + '[/green bold]' + f' step data updated')
+
+    # 4. Create new `Testcase`
+    testcase_data = api_add_testcases(
+        case_id=case_id,
+        site_id=site_id,
+        updates=_updates
+    )
+
+    if not testcase_data['success']:
+        rprint(testcase_data)
+        return False
+    
+    # saving testcase_id
+    testcase_id = testcase_data['data']['id']
+
+    # 5. Check for `Testcase` completion
+    print(f'\nwaiting for Testcase completion...')
+    wait_for_completion(ids=[testcase_id], obj='testcase')
+    testcase = api_get_testcases(testcase_id=testcase_id, api_key=api_key)['data']
+    passed = testcase['passed']
+
+    failed = []
+    i = 1
+    # getting failed steps;
+    for step in testcase['steps']:
+        if not step['action']['passed']:
+            failed.append(f'Step #{i}')
+        i += 1
+
+    # displaying results
+    print('\nTestcase results:')
+    if passed:
+        rprint(
+            '[green bold]' + u'\u2714' + '[/green bold]' + 
+            f' Passed : https://app.scanerr.io/testcase/{testcase_id}' 
+        )
+    else:
+        rprint(
+            f'{"\n[red bold]" + u"\u2718" + "[/red bold]"}' + 
+            f' Failed : https://app.scanerr.io/testcase/{testcase_id}' + 
+            f'\n failed steps : {[n for n in failed]}'
+        )
+
+    # returning results
+    return passed
 
 
 
