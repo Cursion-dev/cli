@@ -1,9 +1,12 @@
 from setuptools import find_packages, setup
+from pathlib import Path
 
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='scanerr',
-    version='0.0.8',
+    version='0.0.10',
     packages=find_packages(),
     install_requires=[
         'python-dotenv',
@@ -15,5 +18,7 @@ setup(
         'console_scripts': [
             'scanerr=src.scanerr.root:root'
         ]
-    }
+    },
+    long_description=long_description,
+    long_description_content_type='text/markdown'
 )

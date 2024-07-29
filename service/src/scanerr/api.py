@@ -79,7 +79,7 @@ def api_add_site(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/site/delay'
+    url = f'{SCANERR_API_BASE_URL}/site'
 
     data = {
         "site_url": site_url,
@@ -222,7 +222,7 @@ def api_add_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/page/delay'
+    url = f'{SCANERR_API_BASE_URL}/page'
 
     data = {
         "site_id": site_id,   
@@ -333,7 +333,7 @@ def api_scan_site(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/scan/delay'
+    url = f'{SCANERR_API_BASE_URL}/scan'
 
     data = {
         "site_id": site_id 
@@ -370,7 +370,7 @@ def api_scan_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/scan/delay'
+    url = f'{SCANERR_API_BASE_URL}/scan'
 
     data = {
         "page_id": page_id
@@ -450,7 +450,7 @@ def api_test_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/test/delay'
+    url = f'{SCANERR_API_BASE_URL}/test'
 
     data = {
         "page_id": page_id,
@@ -609,7 +609,7 @@ def api_add_testcases(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/testcase/delay'
+    url = f'{SCANERR_API_BASE_URL}/testcase'
 
     data = {
         'case_id': case_id,
@@ -672,7 +672,7 @@ def wait_for_completion(ids: list, obj: str) -> None:
 def api_test_site(
         site_id: str,
         max_wait_time: int=120,
-        min_score: int=90,
+        threshold: int=95,
         api_key: str=None
     ):
     
@@ -772,16 +772,16 @@ def api_test_site(
     print('\nTest results:')
     for test_id in test_ids:
         score = api_get_tests(test_id=test_id, api_key=api_key)['data']['score']
-        _scroe = str(round(score, 2))
-        if score >= min_score:
+        _score = str(round(score, 2))
+        if score >= threshold:
             rprint(
                 ' [green bold]' + u'\u2714' + '[/green bold]' + 
-                f' passed {_scroe}% : https://app.scanerr.io/test/{test_id}'
+                f' passed {_score}% : https://app.scanerr.io/test/{test_id}'
             )
         else:
             rprint(
                 ' [red bold]' + u'\u2718' + '[/red bold]' +
-                 f' failed {_scroe}% : https://app.scanerr.io/test/{test_id}'
+                f' failed {_score}% : https://app.scanerr.io/test/{test_id}'
             )
             success = False
 
