@@ -34,7 +34,7 @@ This docker image provides easy access to the CLI and priorities single use comm
 ```shell
 docker run scanerr/cli test-site \ 
     <site-id> \
-    --min-score 85 \
+    --threshold 85 \
     --max-wait-time 120 \
     --api-key <api_key> 
 ```
