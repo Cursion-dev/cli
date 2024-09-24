@@ -10,13 +10,13 @@ from .api import *
 # High Level Configs
 
 app = typer.Typer()
-env_dir = Path(str(Path.home()) + '/scanerr')
-env_file = Path(str(Path.home()) + '/scanerr/.env')
+env_dir = Path(str(Path.home()) + '/cursion')
+env_file = Path(str(Path.home()) + '/cursion/.env')
 
 load_dotenv(dotenv_path=env_file)
 
 API_KEY = f'Token {os.getenv('API_KEY')}'
-API_ROOT = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.scanerr.io'}'
+API_ROOT = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.cursion.dev'}'
 
 
 
@@ -24,17 +24,17 @@ API_ROOT = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'h
 
 
 @app.command()
-def config(api_key: str, api_root: str='https://api.scanerr.io') -> None:
+def config(api_key: str, api_root: str='https://api.cursion.dev') -> None:
 
     """ 
-    Setup and configure the Scanerr CLI for initial use 
+    Setup and configure the Cursion CLI for initial use 
     """
 
-    # deleting $HOME/scanerr/.env if exists
+    # deleting $HOME/cursion/.env if exists
     if env_dir.exists():
         shutil.rmtree(env_dir)
     
-    # creating new $HOME/scanerr dir
+    # creating new $HOME/cursion dir
     os.mkdir(env_dir)
 
     # adding new configs tp .env
@@ -96,7 +96,7 @@ def check_key_and_root():
 def check():
     
     """ 
-    Check that Scanerr CLI is properly configured
+    Check that Cursion CLI is properly configured
     """
 
     # completing checks
@@ -125,7 +125,7 @@ def check():
             '\n[green bold]' +
             u'\u2714' +
             '[/green bold]'+
-            f" All checks passed - Scanerr is confgured correctly\n"
+            f" All checks passed - Cursion is confgured correctly\n"
         )
         rprint(f" API_KEY  : Token •••••••••••••••••••••••••••")
         rprint(f" API_ROOT : {API_ROOT}\n\n")
@@ -139,7 +139,7 @@ def check():
         )
         rprint(
             'To fix, please run: \n' +
-            ' scanerr config <api_key>'+ 
+            ' cursion config <api_key>'+ 
             ' --api-root=<private_api_root>\n'
         )
 
@@ -166,7 +166,7 @@ def print_formated_response(response: dict, verbose: bool=True) -> None:
 def add_site(site_url: str, v: bool=True, api_key: str=None):
 
     """ 
-    Add a `Site` object to your Scanerr account
+    Add a `Site` object to your Cursion account
     """
 
     # sending request
@@ -460,7 +460,7 @@ def test_site(
     )
 
     if not resp:
-        raise Exception('- Scanerr Tests Failed -')
+        raise Exception('- Cursion Tests Failed -')
 
 
 
@@ -544,7 +544,7 @@ def testcase_site(
     )
 
     if not resp:
-        raise Exception('- Scanerr Testcase Failed -')
+        raise Exception('- Cursion Testcase Failed -')
 
 
 

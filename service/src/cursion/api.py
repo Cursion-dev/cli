@@ -3,16 +3,16 @@ from dotenv import load_dotenv
 from pathlib import Path
 from rich import print as rprint
 
-env_file = Path(str(Path.home()) + '/scanerr/.env')
+env_file = Path(str(Path.home()) + '/cursion/.env')
 
 load_dotenv(dotenv_path=env_file)
 
 # import env vars
-SCANERR_API_BASE_URL = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.scanerr.io'}/v1/ops'
-SCANERR_API_TOKEN = f'Token {os.getenv('API_KEY')}'
+CURSION_API_BASE_URL = f'{os.getenv('API_ROOT') if os.getenv('API_ROOT') is not None else 'https://api.cursion.dev'}/v1/ops'
+CURSION_API_TOKEN = f'Token {os.getenv('API_KEY')}'
 headers = {
    "content-type": "application/json",
-   "Authorization" : SCANERR_API_TOKEN
+   "Authorization" : CURSION_API_TOKEN
 }
 
 
@@ -79,7 +79,7 @@ def api_add_site(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/site'
+    url = f'{CURSION_API_BASE_URL}/site'
 
     data = {
         "site_url": site_url,
@@ -118,7 +118,7 @@ def api_crawl_site(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/site/{site_id}/crawl' 
+    url = f'{CURSION_API_BASE_URL}/site/{site_id}/crawl' 
 
     # check headers for API KEY
     headers = check_headers(api_key=api_key)
@@ -150,7 +150,7 @@ def api_get_sites(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/site'
+    url = f'{CURSION_API_BASE_URL}/site'
 
     params = {
         "site_id": site_id,
@@ -187,7 +187,7 @@ def api_delete_site(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/site/{site_id}'
+    url = f'{CURSION_API_BASE_URL}/site/{site_id}'
 
     # check headers for API KEY
     headers = check_headers(api_key=api_key)
@@ -222,7 +222,7 @@ def api_add_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/page'
+    url = f'{CURSION_API_BASE_URL}/page'
 
     data = {
         "site_id": site_id,   
@@ -262,7 +262,7 @@ def api_get_pages(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/page'
+    url = f'{CURSION_API_BASE_URL}/page'
 
     params = {
         "site_id": site_id,
@@ -301,7 +301,7 @@ def api_delete_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/page/{page_id}'
+    url = f'{CURSION_API_BASE_URL}/page/{page_id}'
 
     # check headers for API KEY
     headers = check_headers(api_key=api_key)
@@ -333,7 +333,7 @@ def api_scan_site(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/scan'
+    url = f'{CURSION_API_BASE_URL}/scan'
 
     data = {
         "site_id": site_id 
@@ -370,7 +370,7 @@ def api_scan_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/scan'
+    url = f'{CURSION_API_BASE_URL}/scan'
 
     data = {
         "page_id": page_id
@@ -408,7 +408,7 @@ def api_get_scans(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/scan'
+    url = f'{CURSION_API_BASE_URL}/scan'
 
     params = {
         'scan_id': scan_id,  # OPTIONAL for returning a specific Scan
@@ -450,7 +450,7 @@ def api_test_page(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/test'
+    url = f'{CURSION_API_BASE_URL}/test'
 
     data = {
         "page_id": page_id,
@@ -490,7 +490,7 @@ def api_get_tests(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/test'
+    url = f'{CURSION_API_BASE_URL}/test'
 
     params = {
         'test_id': test_id, 
@@ -530,7 +530,7 @@ def api_get_cases(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/case'
+    url = f'{CURSION_API_BASE_URL}/case'
 
     params = {
         'case_id': case_id, 
@@ -569,7 +569,7 @@ def api_get_testcases(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/testcase'
+    url = f'{CURSION_API_BASE_URL}/testcase'
 
     params = {
         'testcase_id': testcase_id,
@@ -609,7 +609,7 @@ def api_add_testcases(*args, **kwargs):
     api_key = kwargs.get('api_key')
 
     # setup configs
-    url = f'{SCANERR_API_BASE_URL}/testcase'
+    url = f'{CURSION_API_BASE_URL}/testcase'
 
     data = {
         'case_id': case_id,
@@ -776,12 +776,12 @@ def api_test_site(
         if score >= threshold:
             rprint(
                 ' [green bold]' + u'\u2714' + '[/green bold]' + 
-                f' passed {_score}% : https://app.scanerr.io/test/{test_id}'
+                f' passed {_score}% : https://app.cursion.dev/test/{test_id}'
             )
         else:
             rprint(
                 ' [red bold]' + u'\u2718' + '[/red bold]' +
-                f' failed {_score}% : https://app.scanerr.io/test/{test_id}'
+                f' failed {_score}% : https://app.cursion.dev/test/{test_id}'
             )
             success = False
 
@@ -894,12 +894,12 @@ def api_testcase_site(
     if passed:
         rprint(
             '[green bold]' + u'\u2714' + '[/green bold]' + 
-            f' Passed : https://app.scanerr.io/testcase/{testcase_id}' 
+            f' Passed : https://app.cursion.dev/testcase/{testcase_id}' 
         )
     else:
         rprint(
             f'{"\n[red bold]" + u"\u2718" + "[/red bold]"}' + 
-            f' Failed : https://app.scanerr.io/testcase/{testcase_id}' + 
+            f' Failed : https://app.cursion.dev/testcase/{testcase_id}' + 
             f'\n failed steps : {[n for n in failed]}'
         )
 

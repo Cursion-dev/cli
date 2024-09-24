@@ -5,8 +5,8 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setup(
-    name='scanerr',
-    version='0.0.10',
+    name='cursion',
+    version='0.0.1',
     packages=find_packages(),
     install_requires=[
         'python-dotenv',
@@ -16,7 +16,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'scanerr=src.scanerr.root:root'
+            'cursion=src.cursion.root:root'
         ]
     },
     long_description=long_description,

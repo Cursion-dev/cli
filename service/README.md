@@ -1,25 +1,25 @@
-# Scanerr CLI (command line interface)
+# Cursion CLI (command line interface)
 
 ![Static Badge](https://img.shields.io/badge/CLI-Available-mint)
 
-This is the CLI repo for the Scanerr API, an error detection service designed to run front-end tests on web applications.
+This is the CLI repo for the Cursion API, an error detection service designed to run front-end tests on web applications.
 
-Copyright © Scanerr 2024
+Copyright © Cursion 2024
 
 ### Usage
-> Reference <a target="_blank" href="https://docs.scanerr.io/guides/cli.html">Scanerr Docs</a> for usage instructions
+> Reference <a target="_blank" href="https://docs.cursion.dev/guides/cli.html">Cursion Docs</a> for usage instructions
 
 ---
 
 ### Installation
 ```shell
-pip install scanerr
+pip install cursion
 ```
 
 ### Basic Setup
 ```shell
-scanerr config <api_key>
-scanerr check
+cursion config <api_key>
+cursion check
 ```
 
 ---
@@ -32,7 +32,7 @@ This docker image provides easy access to the CLI and priorities single use comm
 ### Usage
 
 ```shell
-docker run scanerr/cli test-site \ 
+docker run cursion/cli test-site \ 
     <site-id> \
     --threshold 85 \
     --max-wait-time 120 \
@@ -42,14 +42,14 @@ docker run scanerr/cli test-site \
 **For a full list of commands:**
 
 ```shell
-docker run scanerr/cli --help
+docker run cursion/cli --help
 ```
 
 ### LICENSE
 ```license
 The MIT License
 
-Copyright (c) Scanerr.
+Copyright (c) Cursion.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -71,4 +71,4 @@ THE SOFTWARE.
 ```
 
 # Support
-Please open [issues in Github](https://github.com/Scanerr-io/cli/issues) or send questions to [Scanerr support](mailto:hello@scanerr.io)
+Please open [issues in Github](https://github.com/Cursion/cli/issues) or send questions to [Cursion support](mailto:hello@cursion.dev)
