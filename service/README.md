@@ -32,7 +32,7 @@ This docker image provides easy access to the CLI and priorities single use comm
 ### Usage
 
 ```shell
-docker run cursion/cli test-site \ 
+docker run cursiondev/cli test-site \ 
     <site-id> \
     --threshold 85 \
     --max-wait-time 120 \
@@ -42,7 +42,7 @@ docker run cursion/cli test-site \
 **For a full list of commands:**
 
 ```shell
-docker run cursion/cli --help
+docker run cursiondev/cli --help
 ```
 
 ### LICENSE
@@ -71,4 +71,4 @@ THE SOFTWARE.
 ```
 
 # Support
-Please open [issues in Github](https://github.com/Cursion/cli/issues) or send questions to [Cursion support](mailto:hello@cursion.dev)
+Please open [issues in Github](https://github.com/Cursion-dev/cli/issues) or send questions to [Cursion support](mailto:hello@cursion.dev)
