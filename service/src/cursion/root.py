@@ -442,7 +442,7 @@ def get_tests(page_id: str=None, test_id: str=None, v: bool=True, api_key: str=N
 def test_site(
         site_id: str, 
         max_wait_time :int=120,
-        min_score: int=90,
+        threshold: int=90,
         api_key: str=None
     ):
 
@@ -455,7 +455,7 @@ def test_site(
     resp = api_test_site(
         site_id=site_id, 
         max_wait_time=max_wait_time,
-        min_score=min_score,
+        threshold=threshold,
         api_key=api_key,
     )
 
